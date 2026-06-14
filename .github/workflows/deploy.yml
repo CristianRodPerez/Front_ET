@@ -13,7 +13,7 @@ jobs:
       contents: read
 
     steps:
-      - name: Checkout
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
@@ -24,14 +24,9 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Verify AWS
+      - name: Verify AWS Connection
         run: aws sts get-caller-identity
 
-      - name: Login ECR
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build Docker Image
-        run: docker build -t front-et .
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -43,9 +38,22 @@ jobs:
 
       - name: Generate Static Files
         run: mvn exec:java
-        
-      - name: Tag Image
-        run: docker tag front-et:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/front-et:latest
 
-      - name: Push Image
-        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/front-et:latest
+      - name: Verify Output Directory
+        run: ls -la output
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker Image
+        run: docker build -t front-et .
+
+      - name: Tag Docker Image
+        run: |
+          docker tag front-et:latest \
+          ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/front-et:latest
+
+      - name: Push Docker Image
+        run: |
+          docker push \
+          ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/front-et:latest
