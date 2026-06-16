@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mariadb:10.5
+    container_name: mysql-devops
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: users_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backjs:
+    build:
+      context: ../backJs_ET
+    container_name: backjs
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root123
+      DB_NAME: users_db
+    depends_on:
+      - mysql
+
+  backpy:
+    build:
+      context: ../BackPy_ET
+    container_name: backpy
+    restart: always
+    ports:
+      - "8082:8082"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root123
+      DB_NAME: products_db
+    depends_on:
+      - mysql
+
+  frontend:
+    build:
+      context: .
+    container_name: frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backjs
+      - backpy
+
+volumes:
+  mysql_data:
+    driver: local
+
