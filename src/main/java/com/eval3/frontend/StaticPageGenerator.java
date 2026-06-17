@@ -398,8 +398,8 @@ footer {
     }
 
     private static void generateScriptJs() throws IOException {
-        String usersUrl = "http://54.145.125.41:8081";
-        String productsUrl = "http://18.234.80.151:8082";
+        String usersUrl = "http://3.236.24.70:8081";
+        String productsUrl = "http://52.21.196.117:8082";
         System.out.println("Configurando frontend: Users API -> " + usersUrl + " | Products API -> " + productsUrl);
 
         String js = """
