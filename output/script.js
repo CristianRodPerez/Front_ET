@@ -164,7 +164,7 @@ function handleRegister(event) {
     }
 
     // Enviar petición al Backend 1 (User Service)
-    fetch('http://54.145.125.41:8081/api/users/register'), {
+    fetch('http://54.145.125.41:8081/api/users/register',  {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
