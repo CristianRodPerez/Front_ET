@@ -37,6 +37,9 @@ jobs:
         run: mvn clean compile
 
       - name: Generate Static Files
+        env:
+          BACKEND_USERS_URL: http://54.145.125.41:8081
+          BACKEND_PRODUCTS_URL: http://18.234.80.151:8082
         run: mvn exec:java
 
       - name: Verify Output Directory
