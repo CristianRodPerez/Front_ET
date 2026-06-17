@@ -81,7 +81,7 @@ function loadProducts() {
     const productsGrid = document.getElementById('products-grid');
     productsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #666;">Cargando productos...</p>';
 
-    fetch('http://54.90.188.200:8082/api/products')
+    fetch('http://18.234.80.151:8082/api/products')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al responder del servidor');
@@ -164,7 +164,7 @@ function handleRegister(event) {
     }
 
     // Enviar petición al Backend 1 (User Service)
-    fetch('http://54.237.41.211:8081/api/users/register'), {
+    fetch('http://54.145.125.41:8081/api/users/register'), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
